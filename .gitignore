@@ -1,0 +1,8 @@
+.idea/
+.editorconfig
+.vscode/
+node_modules/
+eslint.config.mjs
+build/
+tmp/
+temp/
