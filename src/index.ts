@@ -3,6 +3,7 @@ import 'express-async-errors';
 import { AppDataSource } from './database/data-source';
 import AppError from './api/middlewares/AppError';
 import { urlencoded } from 'body-parser';
+import routes from './routes';
 
 
 AppDataSource.initialize()
@@ -10,6 +11,8 @@ AppDataSource.initialize()
         const app = express();
         app.use(express.json());
         app.use(urlencoded({ extended: true }));
+
+        app.use('/v1', routes);
 
         app.get('/', (req, res) => {
             res.send('Funcionando')

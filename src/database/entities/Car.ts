@@ -1,6 +1,6 @@
-import {Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
+@Entity('Cars')
 export class Car {
     @PrimaryGeneratedColumn()
     id: number;
@@ -11,23 +11,15 @@ export class Car {
     @Column()
     color: string;
 
-    @Column()
-    year: string;
+    @Column('integer')
+    year: number;
 
     @Column('integer')
     valuePerDay: number;
 
-    @Column('text')
-    acessories: string;
+    @Column('json')
+    acessories: {name: string}[]; 
 
-    @Column()
-    numberOfPassengers: number;
-
-    getAccessories(): {name: string}[] {
-        return JSON.parse(this.acessories);
-    }
-
-    setAccessories(acessories: {name: string}[]): void {
-        this.acessories = JSON.stringify(acessories)
-    }
+    @Column('integer')
+    numberOfPassengers: number
 }

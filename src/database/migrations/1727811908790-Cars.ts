@@ -32,7 +32,7 @@ export class Cars1727811908790 implements MigrationInterface {
                     },
                     {
                         name: 'acessories',
-                        type: 'text',
+                        type: 'json',
                     },
                     {
                         name: 'numberOfPassengers',
