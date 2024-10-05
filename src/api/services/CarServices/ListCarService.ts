@@ -16,7 +16,7 @@ class ListCarService {
             throw new AppError(
                 400,
                 'Bad Request',
-                'Nenhum carro encontrado com esses parâmetros'
+                'O Carro não foi encontrado na nossa base de dados'
             );
         }
 

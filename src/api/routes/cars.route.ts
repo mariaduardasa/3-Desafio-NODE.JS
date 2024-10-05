@@ -37,6 +37,7 @@ carsRouter.get(
 
 
 carsRouter.get('/', carsController.index);
+
 carsRouter.put(
     '/:id',
     celebrate({
