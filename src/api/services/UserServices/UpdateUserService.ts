@@ -124,6 +124,8 @@ class UpdateUserService {
             const age = today.getFullYear() - birthDate.getFullYear();
             isQualified = age > 18 || (age === 18 && (today.getMonth() > birthDate.getMonth() ||
                 (today.getMonth() === birthDate.getMonth() && today.getDate() >= birthDate.getDate())));
+
+                user.birth = formattedBirth;
         }
         
         let addressData = null;
