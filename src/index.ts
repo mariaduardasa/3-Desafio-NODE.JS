@@ -1,6 +1,7 @@
 import express from 'express';
 import 'express-async-errors';
 import { AppDataSource } from './database/data-source';
+import { errors } from 'celebrate';
 import AppError from './api/middlewares/AppError';
 import { urlencoded } from 'body-parser';
 import routes from './routes';
@@ -24,6 +25,9 @@ AppDataSource.initialize()
         const specs = swaggerJsdoc(options);
         app.use('/v1/docs', swaggerUi.serve, swaggerUi.setup(specs));
         app.use('/v1', routes);
+
+        app.use(errors());
+
 
         app.get('/', (req, res) => {
             res.send('Funcionando')
