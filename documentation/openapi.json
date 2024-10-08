@@ -1,0 +1,839 @@
+{
+    "openapi" : "3.0.0",
+    "info" : {
+      "title" : "FlexiLease Autos 🚜",
+      "description" : "API REST completa para uma locadora de carros",
+      "contact" : {
+        "name" : "Maria Eduarda de Sá",
+        "email" : "desmariaeduarda@hotmail.com"
+      },
+      "version" : "1.0"
+    },
+    "servers" : [ {
+      "url" : "http://127.0.0.1:3000/api"
+    } ],
+    "paths" : {
+      "/car" : {
+        "get" : {
+          "tags" : [ "Car" ],
+          "summary" : "Este endpoint retorna uma lista contendo todos os carros cadastrados.",
+          "description" : "Este endpoint retorna **todos** os carros cadastrados.",
+          "responses" : {
+            "200" : {
+              "description" : "Uma lista de carros.",
+              "content" : {
+                "application/json" : {
+                  "schema" : {
+                    "type" : "array",
+                    "items" : {
+                      "$ref" : "#/components/schemas/carResponseGet"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post" : {
+          "tags" : [ "Car" ],
+          "summary" : "Este endpoint insere um carro no sistema",
+          "description" : "Este endpoint insere um novo carro no sistema.",
+          "requestBody" : {
+            "description" : "Formato JSON que o carro deverá ser enviado.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/carInput"
+                }
+              }
+            },
+            "required" : true
+          },
+          "responses" : {
+            "200" : {
+              "description" : "Retorna o carro inserido.",
+              "content" : {
+                "application/json" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/carResponse"
+                  }
+                }
+              }
+            },
+            "500" : {
+              "description" : "Retorna um erro interno no servidor."
+            }
+          }
+        }
+      },
+      "/car/{id}" : {
+        "get" : {
+          "tags" : [ "Car" ],
+          "summary" : "Este endpoint retorna um carro específico",
+          "description" : "Este endpoint retorna o carro correspondente ao código especificado como parâmetro na URL.",
+          "parameters" : [ {
+            "name" : "id",
+            "in" : "path",
+            "description" : "ID do carro que deseja pesquisar.",
+            "required" : true,
+            "style" : "simple",
+            "explode" : false,
+            "schema" : {
+              "type" : "integer"
+            }
+          } ],
+          "responses" : {
+            "200" : {
+              "description" : "Retorna o carro especificado.",
+              "content" : {
+                "application/json" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/carResponseGet"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "put" : {
+          "tags" : [ "Car" ],
+          "summary" : "Este endpoint atualiza um carro no sistema",
+          "description" : "Este endpoint atualiza um carro no sistema.",
+          "parameters" : [ {
+            "name" : "id",
+            "in" : "path",
+            "description" : "ID do carro que será atualizado.",
+            "required" : true,
+            "style" : "simple",
+            "explode" : false,
+            "schema" : {
+              "type" : "integer"
+            }
+          } ],
+          "requestBody" : {
+            "description" : "Formato JSON que o carro deverá ser enviado.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/carInput"
+                }
+              }
+            },
+            "required" : true
+          },
+          "responses" : {
+            "200" : {
+              "description" : "Retorna o carro atualizado.",
+              "content" : {
+                "application/json" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/carResponse"
+                  }
+                }
+              }
+            },
+            "500" : {
+              "description" : "Retorna um erro interno no servidor."
+            }
+          }
+        },
+        "delete" : {
+          "tags" : [ "Car" ],
+          "summary" : "Este endpoint remove um carro do sistema",
+          "description" : "Este endpoint remove um carro no sistema.",
+          "parameters" : [ {
+            "name" : "id",
+            "in" : "path",
+            "description" : "ID do carro que será removido.",
+            "required" : true,
+            "style" : "simple",
+            "explode" : false,
+            "schema" : {
+              "type" : "integer"
+            }
+          } ],
+          "responses" : {
+            "204" : {
+              "description" : "Confirma a remoção com sucesso."
+            }
+          }
+        },
+        "patch" : {
+          "tags" : [ "Car" ],
+          "summary" : "Este endpoint edita um acessório de um carro específico (adição ou remoção)",
+          "description" : "Este endpoint edita ou remove um acessório de um carro específico, identificado pelo ID do carro.",
+          "parameters" : [ {
+            "name" : "id",
+            "in" : "path",
+            "description" : "ID do carro cujo acessório será editado ou removido.",
+            "required" : true,
+            "style" : "simple",
+            "explode" : false,
+            "schema" : {
+              "type" : "integer"
+            }
+          } ],
+          "requestBody" : {
+            "description" : "Nome do acessório que será editado ou removido.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Accessory"
+                }
+              }
+            },
+            "required" : true
+          },
+          "responses" : {
+            "200" : {
+              "description" : "Retorna o carro atualizado com o acessório modificado.",
+              "content" : {
+                "application/json" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/carResponse"
+                  }
+                }
+              }
+            },
+            "500" : {
+              "description" : "Erro interno no servidor."
+            }
+          }
+        }
+      },
+      "/user" : {
+        "post" : {
+          "tags" : [ "User" ],
+          "summary" : "Este endpoint insere um usuário no sistema",
+          "description" : "Este endpoint insere um novo usuário no sistema.",
+          "requestBody" : {
+            "description" : "Formato JSON que o usuário deverá ser enviado.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/userInput"
+                }
+              }
+            },
+            "required" : true
+          },
+          "responses" : {
+            "200" : {
+              "description" : "Retorna o usuário inserido.",
+              "content" : {
+                "application/json" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/userResponse"
+                  }
+                }
+              }
+            },
+            "500" : {
+              "description" : "Retorna um erro interno no servidor."
+            }
+          }
+        }
+      },
+      "/user/{id}" : {
+        "get" : {
+          "tags" : [ "User" ],
+          "summary" : "Este endpoint retorna um usuário específico",
+          "description" : "Este endpoint retorna o usuário correspondente ao código especificado na URL.",
+          "parameters" : [ {
+            "name" : "id",
+            "in" : "path",
+            "description" : "ID do usuário que deseja pesquisar.",
+            "required" : true,
+            "style" : "simple",
+            "explode" : false,
+            "schema" : {
+              "type" : "integer"
+            }
+          } ],
+          "responses" : {
+            "200" : {
+              "description" : "Retorna o usuário especificado.",
+              "content" : {
+                "application/json" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/userResponseGet"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "put" : {
+          "tags" : [ "User" ],
+          "summary" : "Este endpoint atualiza um usuário no sistema",
+          "description" : "Este endpoint atualiza um usuário autenticado no sistema.",
+          "parameters" : [ {
+            "name" : "id",
+            "in" : "path",
+            "description" : "Código identificador do usuário.",
+            "required" : true,
+            "style" : "simple",
+            "explode" : false,
+            "schema" : {
+              "type" : "integer"
+            }
+          } ],
+          "requestBody" : {
+            "description" : "Formato JSON que o usuário deverá ser enviado.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/userInput"
+                }
+              }
+            },
+            "required" : true
+          },
+          "responses" : {
+            "200" : {
+              "description" : "Retorna o usuário atualizado.",
+              "content" : {
+                "application/json" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/userResponse"
+                  }
+                }
+              }
+            },
+            "500" : {
+              "description" : "Retorna um erro interno no servidor."
+            }
+          }
+        },
+        "delete" : {
+          "tags" : [ "User" ],
+          "summary" : "Este endpoint remove um usuário do sistema",
+          "description" : "Este endpoint remove um usuário autenticado no sistema.",
+          "parameters" : [ {
+            "name" : "id",
+            "in" : "path",
+            "description" : "Código identificador do usuário.",
+            "required" : true,
+            "style" : "simple",
+            "explode" : false,
+            "schema" : {
+              "type" : "integer"
+            }
+          } ],
+          "responses" : {
+            "204" : {
+              "description" : "Confirma a remoção com sucesso."
+            }
+          }
+        }
+      },
+      "/auth" : {
+        "post" : {
+          "tags" : [ "User Authentication" ],
+          "summary" : "Este endpoint autentica um usuário no sistema",
+          "description" : "Este endpoint autentica um usuário no sistema.",
+          "requestBody" : {
+            "description" : "Formato JSON que o usuário deverá enviar para autenticação.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/authInput"
+                }
+              }
+            },
+            "required" : true
+          },
+          "responses" : {
+            "200" : {
+              "description" : "Retorna o usuário autenticado.",
+              "content" : {
+                "application/json" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/authResponse"
+                  }
+                }
+              }
+            },
+            "500" : {
+              "description" : "Retorna um erro interno no servidor."
+            }
+          }
+        }
+      },
+      "/reserve" : {
+        "get" : {
+          "tags" : [ "Reserve" ],
+          "summary" : "Este endpoint retorna uma lista contendo todas reservas cadastradas.",
+          "description" : "Este endpoint retorna **todas** as reservas cadastradas.",
+          "responses" : {
+            "200" : {
+              "description" : "Uma lista de reservas.",
+              "content" : {
+                "application/json" : {
+                  "schema" : {
+                    "type" : "array",
+                    "items" : {
+                      "$ref" : "#/components/schemas/reserveResponseGet"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post" : {
+          "tags" : [ "Reserve" ],
+          "summary" : "Este endpoint insere uma nova resrva no sistema",
+          "description" : "Este endpoint insere uma nova reserva no sistema.",
+          "requestBody" : {
+            "description" : "Formato JSON que a rserva deverá ser enviado.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/reserveInput"
+                }
+              }
+            },
+            "required" : true
+          },
+          "responses" : {
+            "200" : {
+              "description" : "Retorna a reserva inserido.",
+              "content" : {
+                "application/json" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/reserveResponse"
+                  }
+                }
+              }
+            },
+            "500" : {
+              "description" : "Retorna um erro interno no servidor."
+            }
+          }
+        }
+      },
+      "/reserve/{id}" : {
+        "get" : {
+          "tags" : [ "Reserve" ],
+          "summary" : "Este endpoint retorna uma reserva específica",
+          "description" : "Este endpoint retorna a reserva correspondente ao código especificado na URL.",
+          "parameters" : [ {
+            "name" : "id",
+            "in" : "path",
+            "description" : "ID da reserva que deseja pesquisar.",
+            "required" : true,
+            "style" : "simple",
+            "explode" : false,
+            "schema" : {
+              "type" : "integer"
+            }
+          } ],
+          "responses" : {
+            "200" : {
+              "description" : "Retorna a reserva especificada.",
+              "content" : {
+                "application/json" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/reserveResponseGet"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "put" : {
+          "tags" : [ "Reserve" ],
+          "summary" : "Este endpoint atualiza uma reservas no sistema",
+          "description" : "Este endpoint atualiza uma reserva de um usuário autenticado no sistema.",
+          "parameters" : [ {
+            "name" : "id",
+            "in" : "path",
+            "description" : "Código identificador da reserva.",
+            "required" : true,
+            "style" : "simple",
+            "explode" : false,
+            "schema" : {
+              "type" : "integer"
+            }
+          } ],
+          "requestBody" : {
+            "description" : "Formato JSON que a reserva deverá ser enviado.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/reserveInput"
+                }
+              }
+            },
+            "required" : true
+          },
+          "responses" : {
+            "200" : {
+              "description" : "Retorna a reserva atualizado.",
+              "content" : {
+                "application/json" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/reserveResponse"
+                  }
+                }
+              }
+            },
+            "500" : {
+              "description" : "Retorna um erro interno no servidor."
+            }
+          }
+        },
+        "delete" : {
+          "tags" : [ "Reserve" ],
+          "summary" : "Este endpoint remove uma reserva do sistema",
+          "description" : "Este endpoint remove uma reserva de um usuário autenticado no sistema.",
+          "parameters" : [ {
+            "name" : "id",
+            "in" : "path",
+            "description" : "Código identificador da reserva.",
+            "required" : true,
+            "style" : "simple",
+            "explode" : false,
+            "schema" : {
+              "type" : "integer"
+            }
+          } ],
+          "responses" : {
+            "204" : {
+              "description" : "Confirma a remoção com sucesso."
+            }
+          }
+        }
+      }
+    },
+    "components" : {
+      "schemas" : {
+        "carResponse" : {
+          "type" : "object",
+          "properties" : {
+            "id" : {
+              "type" : "integer",
+              "description" : "Código identificador de carro definido automaticamente pelo SGBD."
+            },
+            "model" : {
+              "type" : "string",
+              "description" : "Modelo do carro."
+            },
+            "color" : {
+              "type" : "string",
+              "description" : "Cor do carro."
+            },
+            "year" : {
+              "type" : "integer",
+              "description" : "Ano do carro."
+            },
+            "valuePerDay" : {
+              "type" : "integer",
+              "description" : "Valor por dia do carro."
+            },
+            "acessories" : {
+              "type" : "array",
+              "description" : "Lista de acessórios do carro.",
+              "items" : {
+                "$ref" : "#/components/schemas/Accessory"
+              }
+            },
+            "numberOfPassengers" : {
+              "type" : "integer",
+              "description" : "Número de passageiros do carro."
+            }
+          }
+        },
+        "carResponseGet" : {
+          "type" : "object",
+          "properties" : {
+            "id" : {
+              "type" : "integer",
+              "description" : "Código identificador de carro definido automaticamente pelo SGBD."
+            },
+            "model" : {
+              "type" : "string",
+              "description" : "Modelo do carro."
+            },
+            "color" : {
+              "type" : "string",
+              "description" : "Cor do carro."
+            },
+            "year" : {
+              "type" : "integer",
+              "description" : "Ano do carro."
+            },
+            "valuePerDay" : {
+              "type" : "integer",
+              "description" : "Valor por dia do carro."
+            },
+            "acessories" : {
+              "type" : "array",
+              "description" : "Lista de acessórios do carro.",
+              "items" : {
+                "$ref" : "#/components/schemas/Accessory"
+              }
+            },
+            "numberOfPassengers" : {
+              "type" : "integer",
+              "description" : "Número de passageiros do carro."
+            }
+          }
+        },
+        "carInput" : {
+          "type" : "object",
+          "properties" : {
+            "model" : {
+              "type" : "string",
+              "description" : "Modelo do carro."
+            },
+            "color" : {
+              "type" : "string",
+              "description" : "Cor do carro."
+            },
+            "year" : {
+              "type" : "integer",
+              "description" : "Ano do carro."
+            },
+            "valuePerDay" : {
+              "type" : "integer",
+              "description" : "Valor por dia do carro."
+            },
+            "acessories" : {
+              "type" : "array",
+              "description" : "Lista de acessórios do carro.",
+              "items" : {
+                "$ref" : "#/components/schemas/Accessory"
+              }
+            },
+            "numberOfPassengers" : {
+              "type" : "integer",
+              "description" : "Número de passageiros do carro."
+            }
+          }
+        },
+        "Accessory" : {
+          "type" : "object",
+          "properties" : {
+            "name" : {
+              "type" : "string",
+              "description" : "Nome do acessório."
+            }
+          }
+        },
+        "userInput" : {
+          "type" : "object",
+          "properties" : {
+            "name" : {
+              "type" : "string",
+              "description" : "Nome do usuário."
+            },
+            "cpf" : {
+              "type" : "string",
+              "description" : "Cpf do usuário."
+            },
+            "birth" : {
+              "type" : "string",
+              "description" : "Aniversário do usuário."
+            },
+            "cep" : {
+              "type" : "integer",
+              "description" : "Cep do usuário."
+            },
+            "email" : {
+              "type" : "string",
+              "description" : "Email do usuário."
+            },
+            "password" : {
+              "type" : "string",
+              "description" : "Senha do usuário."
+            }
+          }
+        },
+        "userResponse" : {
+          "type" : "object",
+          "properties" : {
+            "id" : {
+              "type" : "integer",
+              "description" : "Código identificador de usuário definido automaticamente pelo SGBD."
+            },
+            "name" : {
+              "type" : "string",
+              "description" : "Nome do usuário."
+            },
+            "cpf" : {
+              "type" : "string",
+              "description" : "Cpf do usuário."
+            },
+            "birth" : {
+              "type" : "string",
+              "description" : "Aniversário do usuário."
+            },
+            "cep" : {
+              "type" : "integer",
+              "description" : "Cep do usuário."
+            },
+            "email" : {
+              "type" : "string",
+              "description" : "Email do usuário."
+            },
+            "qualified" : {
+              "type" : "boolean",
+              "description" : "Usuário maior de 18 anos."
+            },
+            "neighbordhood" : {
+              "type" : "string",
+              "description" : "Endereço via cep."
+            },
+            "street" : {
+              "type" : "string",
+              "description" : "Endereço via cep."
+            },
+            "complement" : {
+              "type" : "string",
+              "description" : "Endereço via cep."
+            },
+            "city" : {
+              "type" : "string",
+              "description" : "Endereço via cep."
+            },
+            "uf" : {
+              "type" : "string",
+              "description" : "Endereço via cep."
+            }
+          }
+        },
+        "userResponseGet" : {
+          "type" : "object",
+          "properties" : {
+            "id" : {
+              "type" : "integer",
+              "description" : "Código identificador de usuário definido automaticamente pelo SGBD."
+            },
+            "name" : {
+              "type" : "string",
+              "description" : "Nome do usuário."
+            },
+            "cpf" : {
+              "type" : "string",
+              "description" : "Cpf do usuário."
+            },
+            "birth" : {
+              "type" : "string",
+              "description" : "Aniversário do usuário."
+            },
+            "cep" : {
+              "type" : "integer",
+              "description" : "Cep do usuário."
+            },
+            "email" : {
+              "type" : "string",
+              "description" : "Email do usuário."
+            },
+            "password" : {
+              "type" : "string",
+              "description" : "Senha do usuário."
+            }
+          }
+        },
+        "authInput" : {
+          "type" : "object",
+          "properties" : {
+            "email" : {
+              "type" : "string",
+              "description" : "Email do usuário."
+            },
+            "password" : {
+              "type" : "string",
+              "description" : "Senha do usuário."
+            }
+          }
+        },
+        "authResponse" : {
+          "type" : "object",
+          "properties" : {
+            "token" : {
+              "type" : "string",
+              "description" : "Token JWT do usuário."
+            }
+          }
+        },
+        "reserveInput" : {
+          "type" : "object",
+          "properties" : {
+            "startDate" : {
+              "type" : "string",
+              "description" : "Data inicial da reserva."
+            },
+            "endDate" : {
+              "type" : "string",
+              "description" : "Data final da reserva."
+            },
+            "carId" : {
+              "type" : "integer",
+              "description" : "id do carro."
+            }
+          }
+        },
+        "reserveResponse" : {
+          "type" : "object",
+          "properties" : {
+            "id" : {
+              "type" : "integer",
+              "description" : "Código identificador da rserva definido automaticamente pelo SGBD."
+            },
+            "startDate" : {
+              "type" : "string",
+              "description" : "Data inicial da reserva."
+            },
+            "endDate" : {
+              "type" : "string",
+              "description" : "Data final da reserva."
+            },
+            "finalValue" : {
+              "type" : "integer",
+              "description" : "Valor final da reserva."
+            },
+            "userId" : {
+              "type" : "integer",
+              "description" : "id do usuário autenticado."
+            },
+            "carId" : {
+              "type" : "integer",
+              "description" : "id do carro."
+            }
+          }
+        },
+        "reserveResponseGet" : {
+          "type" : "object",
+          "properties" : {
+            "id" : {
+              "type" : "integer",
+              "description" : "Código identificador da rserva definido automaticamente pelo SGBD."
+            },
+            "startDate" : {
+              "type" : "string",
+              "description" : "Data inicial da reserva."
+            },
+            "endDate" : {
+              "type" : "string",
+              "description" : "Data final da reserva."
+            },
+            "finalValue" : {
+              "type" : "integer",
+              "description" : "Valor final da reserva."
+            },
+            "userId" : {
+              "type" : "integer",
+              "description" : "id do usuário autenticado."
+            },
+            "carId" : {
+              "type" : "integer",
+              "description" : "id do carro."
+            }
+          }
+        }
+      }
+    }
+  }
