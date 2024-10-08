@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Reserve } from './Reserve';
 
 @Entity('Cars')
 export class Car {
@@ -22,4 +23,7 @@ export class Car {
 
     @Column('integer')
     numberOfPassengers: number
+
+    @OneToMany(() => Reserve, reserve => reserve.car, { cascade: true })
+    reserves: Reserve[];
 }

@@ -11,6 +11,16 @@ interface IRequest {
     numberOfPassengers: number;
 }
 
+interface IResponse {
+    id: number,
+    model: string;
+    color: string;
+    year: number;
+    valuePerDay: number;
+    acessories: { name: string }[];
+    numberOfPassengers: number;
+}
+
 class CreateCarService {
     public async execute({
         model,
@@ -19,7 +29,7 @@ class CreateCarService {
         valuePerDay,
         acessories,
         numberOfPassengers,
-    }: IRequest): Promise<Car> {
+    }: IRequest): Promise<IResponse> {
         const carRepository = AppDataSource.getRepository(Car);
 
         if (year < 1950 || year > 2023) {
@@ -59,7 +69,15 @@ class CreateCarService {
 
         await carRepository.save(car);
 
-        return car;
+        return {
+            id: car.id,
+            model,
+            color,
+            year,
+            valuePerDay,
+            acessories,
+            numberOfPassengers,
+        };
     }
 }
 

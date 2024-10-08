@@ -17,9 +17,9 @@ class ShowCarService {
 
         if (!car) {
             throw new AppError(
-                404, 
-                'Not found', 
-                'Não há carro com esse id'
+                400, 
+                'Bad Request', 
+                'O Carro não foi encontrado na nossa base de dados'
             );
         }
         
