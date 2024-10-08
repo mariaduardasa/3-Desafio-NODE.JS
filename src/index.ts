@@ -4,6 +4,10 @@ import { AppDataSource } from './database/data-source';
 import AppError from './api/middlewares/AppError';
 import { urlencoded } from 'body-parser';
 import routes from './routes';
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
+import doc from '../documentation/openapi.json';
+
 
 
 AppDataSource.initialize()
@@ -12,6 +16,13 @@ AppDataSource.initialize()
         app.use(express.json());
         app.use(urlencoded({ extended: true }));
 
+        const options = {
+            definition: doc,
+            apis: ['./src/routes/*.ts']
+        };
+
+        const specs = swaggerJsdoc(options);
+        app.use('/v1/docs', swaggerUi.serve, swaggerUi.setup(specs));
         app.use('/v1', routes);
 
         app.get('/', (req, res) => {
