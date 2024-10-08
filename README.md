@@ -103,3 +103,4 @@ FlexiLease Autos é uma API desenvolvida para facilitar o gerenciamento de uma l
 
 1. Acesse a API na URL: `http://localhost:3000/`.
 2. Teste os Endpoints pelo Insomnia ou Postman.
+3. Acesse o Swagger na URL: `http://localhost:3000/v1/docs/`
